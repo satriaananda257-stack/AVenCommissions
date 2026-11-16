@@ -1,0 +1,7 @@
+.env
+node_modules
+src/config
+src/controllers
+src/routes
+src/validations
+src/services
