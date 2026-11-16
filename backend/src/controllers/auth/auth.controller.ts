@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { registerSchema, loginSchema } from "../../validations/auth.validation";
 import { db } from "../../config/db";
 import { eq } from "drizzle-orm";
-import { usersTable, profilesTable } from "../../config/schema";
+import { usersTable } from "../../config/schema";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
@@ -11,31 +11,30 @@ export class AuthController {
         try {
             const { username, email, password } = registerSchema.parse(req.body);
 
-            // Check email unique
             const existingEmail = await db.query.usersTable.findFirst({
                 where: eq(usersTable.email, email),
             });
             if (existingEmail) {
-                return res.status(409).json({ success: false, message: "Email already exists" });
+                return res.status(409).json({ success: false, message: "Email sudah digunakan" });
+            }
+
+            const existingUsername = await db.query.usersTable.findFirst({
+                where: eq(usersTable.username, username),
+            });
+            if (existingUsername) {
+                return res.status(409).json({ success: false, message: "Username sudah digunakan" });
             }
 
             const hashedPassword = await bcrypt.hash(password, 10);
 
-            // Insert user — email only, no username in users table
             const [insertedUser] = await db
                 .insert(usersTable)
-                .values({ email, password: hashedPassword })
+                .values({ username, email, password: hashedPassword })
                 .$returningId();
-
-            // Auto-create profile with username
-            await db.insert(profilesTable).values({
-                userId: insertedUser.id,
-                username,
-            });
 
             return res.status(201).json({
                 success: true,
-                message: "Register successful",
+                message: "Register berhasil",
                 data: {
                     user: {
                         id: insertedUser.id,
@@ -62,18 +61,13 @@ export class AuthController {
                 where: eq(usersTable.email, email),
             });
             if (!user) {
-                return res.status(404).json({ success: false, message: "Email or password incorrect" });
+                return res.status(404).json({ success: false, message: "Email atau password salah" });
             }
 
             const isPasswordValid = await bcrypt.compare(password, user.password);
             if (!isPasswordValid) {
-                return res.status(401).json({ success: false, message: "Email or password incorrect" });
+                return res.status(401).json({ success: false, message: "Email atau password salah" });
             }
-
-            // Get profile username
-            const profile = await db.query.profilesTable.findFirst({
-                where: eq(profilesTable.userId, user.id),
-            });
 
             const token = jwt.sign(
                 { id: user.id, email: user.email, role: user.role },
@@ -83,14 +77,15 @@ export class AuthController {
 
             return res.status(200).json({
                 success: true,
-                message: "Login successful",
+                message: "Login berhasil",
                 data: {
                     token,
                     user: {
                         id: user.id,
-                        username: profile?.username ?? null,
+                        username: user.username,
                         email: user.email,
                         role: user.role,
+                        profilePicture: user.profilePicture,
                     },
                 },
             });

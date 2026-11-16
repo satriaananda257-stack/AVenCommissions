@@ -7,6 +7,7 @@ export interface AuthRequest extends Request {
         email: string;
         role: string;
     };
+    files?: { [fieldname: string]: Express.Multer.File[] } | Express.Multer.File[];
 }
 
 export const authenticate = (req: AuthRequest, res: Response, next: NextFunction) => {
