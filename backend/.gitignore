@@ -1,0 +1,10 @@
+.env
+node_modules
+src/config/db.ts
+src/config/cloudinary.ts
+src/config/schema.ts
+src/controllers
+src/routes
+src/validations
+src/services
+src/index.ts
