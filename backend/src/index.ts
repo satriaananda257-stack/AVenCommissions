@@ -3,19 +3,20 @@ dotenv.config();
 
 import express from "express";
 import cors from "cors";
+
 import authRoute from "./routes/auth/auth.route";
-import postsRoute from "./routes/posts/posts.route";
-import usersRouter from "./routes/users/user.route";
-import commentsRouter from "./routes/comments/comments.route";
+import userRoute from "./routes/users/user.route";
+import artistRoute from "./routes/artist/artist.route";
+import servicesRoute from "./routes/services/services.route";
+import commissionsRoute from "./routes/commissions/commissions.route";
+import reviewsRoute from "./routes/reviews/reviews.route";
 
 const app = express();
-const PORT = 5000;
+const PORT = Number(process.env.PORT) || 5000;
 
 app.use(cors({
     origin: (origin, callback) => {
-        // Allow requests with no origin (mobile apps, curl, etc.)
         if (!origin) return callback(null, true);
-        // Allow localhost, 127.0.0.1, and any local network IP (192.168.x.x, 10.x.x.x, 172.x.x.x)
         if (
             origin.startsWith("http://localhost") ||
             origin.startsWith("http://127.0.0.1") ||
@@ -32,22 +33,20 @@ app.use(cors({
     allowedHeaders: ["Content-Type", "Authorization"],
 }));
 
-// Handle OPTIONS preflight for all routes
 app.options(/(.*)/, cors());
 app.use(express.json());
 
-app.use("/api/v1/posts", postsRoute);
 app.use("/api/v1/auth", authRoute);
-app.use("/api/v1/users", usersRouter);
-app.use("/api/v1/comments", commentsRouter);
+app.use("/api/v1/users", userRoute);
+app.use("/api/v1/artists", artistRoute);
+app.use("/api/v1/services", servicesRoute);
+app.use("/api/v1/commissions", commissionsRoute);
+app.use("/api/v1/reviews", reviewsRoute);
 
 app.get("/", (_req, res) => {
-    res.send("Hello World");
+    res.send("AVen Commission API");
 });
 
-app.listen(PORT, '0.0.0.0', () => {
-    console.log(`⚡️[server]: Server is running at http://localhost:${PORT}`);
-    console.log(`⚡️[server]: Also accessible at http://192.168.18.6:${PORT}`);
+app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Server running at http://localhost:${PORT}`);
 });
-
-
