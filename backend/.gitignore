@@ -1,17 +1,28 @@
+
 # Ignore everything
 *
+
+# Allow root files
+!.gitignore
 !drizzle.config.ts
 !package-lock.json
 !package.json
 !tsconfig.json
-# Unignore directories (needed for negation to work)
+
+# Allow src directory
 !src/
+
+# Allow config directory
 !src/config/
+!src/config/cloudinary.ts
+!src/config/db.ts
+!src/config/schema.ts
+
+# Allow middleware directory and its contents
 !src/config/middleware/
+!src/config/middleware/**
+
+# Allow controllers directory
 !src/controllers/
 !src/controllers/auth/
-
-# Unignore specific files
-!src/config/middleware/**
 !src/controllers/auth/**
-!.gitignore
