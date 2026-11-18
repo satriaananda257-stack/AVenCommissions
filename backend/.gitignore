@@ -1,8 +1,13 @@
 # Ignore everything
-\*
+*
+
+# Ignore all environment files
+**/.env
+**/.env.*
 
 # Allow root files
 !.gitignore
+!.envexample
 !drizzle.config.ts
 !package-lock.json
 !package.json
