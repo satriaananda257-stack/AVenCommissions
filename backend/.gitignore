@@ -19,6 +19,8 @@ src/*
 
 # Allow config
 !src/config/
+!src/services/
+!src/services/**
 src/config/*
 !src/config/cloudinary.ts
 !src/config/db.ts
@@ -33,6 +35,8 @@ src/config/*
 src/controllers/*
 !src/controllers/users/
 !src/controllers/users/**
+!src/controllers/services/
+!src/controllers/services/**
 !src/controllers/artist/
 !src/controllers/artist/**
 !src/controllers/auth/
