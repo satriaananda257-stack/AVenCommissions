@@ -10,6 +10,7 @@ import artistRoute from "./routes/artist/artist.route";
 import servicesRoute from "./routes/services/services.route";
 import commissionsRoute from "./routes/commissions/commissions.route";
 import reviewsRoute from "./routes/reviews/reviews.route";
+import categoriesRoute from "./routes/categories/categories.route";
 
 const app = express();
 const PORT = Number(process.env.PORT) || 5000;
@@ -42,6 +43,7 @@ app.use("/api/v1/artists", artistRoute);
 app.use("/api/v1/services", servicesRoute);
 app.use("/api/v1/commissions", commissionsRoute);
 app.use("/api/v1/reviews", reviewsRoute);
+app.use("/api/v1/categories", categoriesRoute);
 
 app.get("/", (_req, res) => {
     res.send("AVen Commission API");

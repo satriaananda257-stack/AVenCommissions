@@ -1,9 +1,13 @@
-
 # Ignore everything
 *
 
+# Ignore all environment files
+**/.env
+**/.env.*
+
 # Allow root files
 !.gitignore
+!.envexample
 !drizzle.config.ts
 !package-lock.json
 !package.json
@@ -11,18 +15,33 @@
 
 # Allow src directory
 !src/
+src/*
 
-# Allow config directory
+# Allow config
 !src/config/
+src/config/*
 !src/config/cloudinary.ts
 !src/config/db.ts
 !src/config/schema.ts
 
-# Allow middleware directory and its contents
+# Allow middleware
 !src/config/middleware/
 !src/config/middleware/**
 
-# Allow controllers directory
+# Allow controllers
 !src/controllers/
+src/controllers/*
+!src/controllers/users/
+!src/controllers/users/**
+!src/controllers/artist/
+!src/controllers/artist/**
 !src/controllers/auth/
 !src/controllers/auth/**
+
+# Allow routes
+!src/routes/
+src/routes/*
+!src/routes/users/
+!src/routes/users/**
+!src/routes/artist/
+!src/routes/artist/**
